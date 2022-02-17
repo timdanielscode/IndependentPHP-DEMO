@@ -24,7 +24,7 @@ class LoginController extends Controller {
 
         if(submitted("submit")) {
             
-            if(hash_equals(CSRF::token('get'), post('token'))) {
+            if(CSRF::validate(CSRF::token('get'), post('token'))) {
 
                 $validate = new Rules();
                 $validate->login_rules();
@@ -35,7 +35,7 @@ class LoginController extends Controller {
                         Session::delete('csrf_token');
                         redirect('/dashboard');
                     } else {
-                        Session::flash('auth-failed', 'Username or password does not match.');
+                        Session::set('auth-failed', 'Username or password does not match.');
                         redirect('/login-admin');   
                     }                  
                 } else {
@@ -43,7 +43,7 @@ class LoginController extends Controller {
                     return $this->view('admin/login', $data);
                 }
             } else {
-                Session::flash('csrf', 'Cross Site Request Forgery!');
+                Session::set('csrf', 'Cross Site Request Forgery!');
                 redirect('/admin/login');
             }
         }

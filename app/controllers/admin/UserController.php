@@ -58,7 +58,7 @@ class UserController extends Controller {
 
         if(submitted('submit')) {
 
-            if(hash_equals(CSRF::token('get'), post('token'))) {
+            if(CSRF::validate(CSRF::token('get'), post('token'))) {
                 
                 $rules = new Rules();
                 $user = new User();

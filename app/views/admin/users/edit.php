@@ -29,7 +29,7 @@
         <div class="form-group">
             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
             <button name="submit" type="submit" class="mt-3 btn btn-primary">Update</button>
-            <input type="hidden" name="token" value="<?php echo CSRF::token('get');?>" />
+            <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
         </div>
 </form>
 
