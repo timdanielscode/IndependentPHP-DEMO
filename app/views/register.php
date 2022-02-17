@@ -53,3 +53,7 @@
         </div>
     </form>
 </div>
+
+<?php 
+    $this->include('footer');
+?>

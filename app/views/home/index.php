@@ -1,5 +1,9 @@
 <?php
     $this->include('header');
-    $this->title('DEMO');
+    $this->include('navbar');
 ?>
-<?php $this->include('navbar'); ?>
+
+
+<?php 
+    $this->include('footer');
+?>

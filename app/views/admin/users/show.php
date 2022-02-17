@@ -42,4 +42,8 @@
     </table>
 </div>
 
+<?php 
+    $this->include('footer');
+?>
+
 
