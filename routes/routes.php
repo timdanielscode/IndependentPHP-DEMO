@@ -11,7 +11,9 @@ Route::get('/')->add('HomeController', 'index');
 Route::view('/example-route-view', '/route/route-view');
 
 if(LoginMiddleware::logged_in() === true) {
-
+    Route::get('/profile/[username]')->add('UserController', 'read');
+    Route::get('/profile/[username]/edit')->add('UserController', 'edit');
+    Route::post('/profile/[username]/edit')->add('UserController', 'update');
     Route::get('/logout')->add('LogoutController', 'logout');
 } else {
     
@@ -21,13 +23,6 @@ if(LoginMiddleware::logged_in() === true) {
     Route::post('/login-admin')->add('admin\LoginController', 'auth');
     Route::get('/register')->add('RegisterController', 'create');
     Route::post('/register')->add('RegisterController', 'store');
-}
-
-if(AuthMiddleware::auth('normal') === true) {
-
-    Route::get('/profile/[username]')->add('UserController', 'read');
-    Route::get('/profile/[username]/edit')->add('UserController', 'edit');
-    Route::post('/profile/[username]/edit')->add('UserController', 'update');
 }
 
 if(AuthMiddleware::auth('admin') === true) {
