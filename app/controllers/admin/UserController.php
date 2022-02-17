@@ -24,6 +24,12 @@ class UserController extends Controller {
         return $this->view('admin/users/index', $data);
     }
 
+    public function create() {
+
+        return $this->view('admin/users/create');
+
+    }
+
     public function read($id) {
 
         $user = new User();
@@ -40,12 +46,13 @@ class UserController extends Controller {
     }
 
     public function edit($id) {
-
+       
         $user = new User();
         $user_role = new UserRole();
         $role = new Roles();
 
-        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $id['id'])->first();
+        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $id["id"])->first();
+       
         $data['user'] = $user;
         $data['rules'] = [];
 
