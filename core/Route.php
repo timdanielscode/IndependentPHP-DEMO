@@ -51,12 +51,12 @@ class Route extends Router {
      * @param string $path
      * @return object Router
      */    
-    public static function view($path) {
+    public static function view($path, $view) {
 
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
 
-           return $route->handleView($path);
+           return $route->handleView($path, $view);
         } else {
             return $route;
         }

@@ -8,7 +8,7 @@ Route::setRouteKeys(['id', 'username']);
 
 Route::get('/')->add('HomeController', 'index');
 
-Route::view('/route-view');
+Route::view('/example-route-view', '/route/route-view');
 
 if(LoginMiddleware::logged_in() === true) {
 

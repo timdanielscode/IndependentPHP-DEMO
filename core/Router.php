@@ -205,7 +205,7 @@ class Router {
      * 
      * @param string $path 
      */ 
-    public function handleView($path = null) {
+    public function handleView($path = null, $view) {
      
         if(strtok($this->request->getUri(), '?') == $path || strtok($this->request->getUri(), '?') . "/" == $path) {
             if($this->request->getMethod() === 'GET') {
@@ -213,7 +213,7 @@ class Router {
                 $controller = $this->namespace("Controller");
                 $instance = new $controller;
                 
-                return $instance->view($path) . exit();
+                return $instance->view($view) . exit();
             } 
         } 
     }
