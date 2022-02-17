@@ -3,7 +3,10 @@
     $this->include('navbar');
 ?>
 <div class="container">
-    <a href="/example-route-view">Return view directly via route</a>
+    <ul>
+        <li><a href="/login-admin">Login for admins</a></li>
+        <li><a href="/example-route-view">Return view directly via route</a></li>
+    </ul>
 </div>
 
 <?php 
