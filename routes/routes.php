@@ -8,6 +8,8 @@ Route::setRouteKeys(['id', 'username']);
 
 Route::get('/')->add('HomeController', 'index');
 
+Route::view('/route-view');
+
 if(LoginMiddleware::logged_in() === true) {
 
     Route::get('/logout')->add('LogoutController', 'logout');
