@@ -4,7 +4,8 @@
 ?>
 
 <div class="container">
-    <a class="btn bg-color-sec text-white" href="/users">Back</a>
+    
+    <h1 class="my-5 text-color-pri"><?php echo $current[0]['username']; ?></h1>
     <table class="table table-striped mt-3 w-100">
         <thead>
             <tr>
@@ -49,6 +50,7 @@
             <?php } ?>
         </tbody>
     </table>
+    <a class="btn bg-color-sec text-white" href="/users">Back</a>
 </div>
 
 <?php 
