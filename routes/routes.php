@@ -10,7 +10,7 @@ Route::get('/')->add('HomeController', 'index');
 
 Route::view('/example-route-view', '/route/route-view');
 
-Route::get('/demo')->add('admin\DemoController', 'index');
+Route::get('/demo')->add('DemoController', 'index');
 
 
 if(LoginMiddleware::logged_in() === true) {
