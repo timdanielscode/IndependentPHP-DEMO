@@ -37,6 +37,14 @@
                         <?php echo $value['email']; ?>
                     </th>
                 </tr>
+                <tr>
+                    <th>
+                        Role
+                    </th>
+                    <th>
+                        <?php echo $value['name']; ?>
+                    </th>
+                </tr>
             <?php } ?>
         </tbody>
     </table>
