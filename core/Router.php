@@ -48,11 +48,8 @@ class Router {
                $this->collectRouteKeyKeys($this->_collRouteKeys);
                $this->getValsRouteKeyUri($this->_collPathRouteKeyKeys);
 
-               $replace = array_replace($this->_partsPath, $this->_uriRouteKeyVals);
-               $replaced = implode("/", $replace);
- 
-               if($replaced == $this->uri()) {                
-                   $path = $replaced;
+               if($this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals) == $this->uri()) {                
+                   $path = $this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals);
                   
                    foreach($this->_pathUriKeyPairedVals as $pathRouteKey => $uriRouteKeyVal) {
                      
@@ -105,11 +102,10 @@ class Router {
                     }
                 }
     
-                $replace = array_replace($this->_partsPath, $this->_uriRouteKeyVals);
-                $replaced = implode("/", $replace);
-    
-                if($replaced == $this->uri()) {                
-                    $path = $replaced;
+                if($this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals) == $this->uri()) {
+
+                    $path = $this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals);
+ 
                     foreach($this->_pathUriKeyPairedVals as $pathRouteKey => $uriRouteKeyVal) {
                       
                         $pathRouteKey = trim($pathRouteKey, "[]");
@@ -246,6 +242,24 @@ class Router {
             }
         }
     }
+
+    /**
+     * 
+     * replaces the exploded parts with uri routekey values
+     * 
+     * @param array $partsPath exploded route path
+     * @param array $uriRouteKeyVals uri routekey values
+     * 
+     * @return string $replaced 
+     */  
+        public function replacePartsPath($partsPath, $uriRouteKeyVals)  {
+
+            $replace = array_replace($partsPath, $uriRouteKeyVals);
+            $replaced = implode("/", $replace);
+
+            return $replaced;
+        }
+
     
     /**
      * add namespace to classes
