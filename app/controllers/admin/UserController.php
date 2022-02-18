@@ -32,7 +32,7 @@ class UserController extends Controller {
     public function store() {
 
         if(submitted('submit')) {
-            
+
             if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {
 
                 $rules = new Rules();
@@ -56,9 +56,15 @@ class UserController extends Controller {
 
                     $lastRegisteredUser = DB::try()->select($user->id)->from($user->t)->order($user->id)->desc(1)->first();              
 
+                    if(post('role') == 'Normal') {
+                        $roleId = 1;
+                    } else {
+                        $roleId = 2;
+                    }
+
                     DB::try()->insert($userRole->t, [
                         $userRole->user_id => $lastRegisteredUser['id'],
-                        $userRole->role_id => 1 
+                        $userRole->role_id => $roleId 
                     ]); 
 
                     Session::set('registered', 'You have been successfully registered!');            

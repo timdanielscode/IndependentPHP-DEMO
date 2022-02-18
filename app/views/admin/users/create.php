@@ -47,6 +47,13 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="exampleFormControlSelect1">User Role:</label>
+            <select name="role" class="form-control" id="exampleFormControlSelect1">
+            <option>Normal</option>
+            <option>Admin</option>
+            </select>
+        </div>
+        <div class="form-group">
             <button name="submit" type="submit" class="mt-3 btn bg-color-sec text-white btn-lg">Register</button>
             <input type="hidden" name="token" value="<?php Csrf::token('add');?>" />
         </div>
