@@ -32,10 +32,10 @@ if(AuthMiddleware::auth('admin') === true) {
     Route::get('/admin/users')->add('admin\UserController', 'index');
     Route::get('/admin/users/create')->add('admin\UserController', 'create');
     Route::post('/admin/users/create')->add('admin\UserController', 'store');
-    Route::get('/admin/users/[id]')->add('admin\UserController', 'read');
-    Route::get('/admin/users/[id]/edit')->add('admin\UserController', 'edit');
-    Route::post('/admin/users/[id]/edit')->add('admin\UserController', 'update');
-    Route::get('/admin/users/[id]/delete')->add('admin\UserController', 'delete');
+    Route::get('/admin/users/[id]/username/[username]')->add('admin\UserController', 'read');
+    Route::get('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'edit');
+    Route::post('/admin/users/[id]/username/[username]/edit')->add('admin\UserController', 'update');
+    Route::get('/admin/users/[id]/username/[username]/delete')->add('admin\UserController', 'delete');
 }
 
 
