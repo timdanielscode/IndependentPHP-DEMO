@@ -10,7 +10,7 @@ use parts\Session;
 use database\DB;
 use core\CSRF;
 use validation\Rules;
-use parts\Response;
+use core\Response;
 
 
 class UserController extends Controller {
@@ -85,13 +85,13 @@ class UserController extends Controller {
         }
     }
 
-    public function read($id) {
+    public function read($request) {
 
         $role = new Roles();
         $user = new User();
         $userRole = new UserRole();
 
-        $current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $id['id'])->fetch();
+        $current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $request['id'])->and('u.username', '=', $request["username"])->fetch();
 
         if(empty($current)) {
             return Response::statusCode(404)->view("/404/404");
@@ -102,18 +102,22 @@ class UserController extends Controller {
 
     }
 
-    public function edit($id) {
+    public function edit($request) {
        
         $user = new User();
         $user_role = new UserRole();
         $role = new Roles();
 
-        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $id["id"])->first();
+        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $request["id"])->and($user->t.'.'.$user->username, '=', $request["username"])->first();
        
         $data['user'] = $user;
         $data['rules'] = [];
 
-        return $this->view('admin/users/edit', $data);
+        if(empty($user)) {
+            return Response::statusCode(404)->view("/404/404");
+        } else {
+            return $this->view('admin/users/edit', $data);
+        }
     }
 
     public function update($request) {
