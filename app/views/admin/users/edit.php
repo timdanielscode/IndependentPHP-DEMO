@@ -9,7 +9,7 @@
 <div class="container">
 
 
-<h1 class="my-5"><?php echo $user['username']; ?></h1>
+<h1 class="my-5 text-color-pri"><?php echo $user['username']; ?></h1>
  
     <form action="" method="POST" class="d-block m-auto">
         <div class="form-group">
@@ -38,7 +38,7 @@
         </div>
         <div class="form-group">
             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
-            <button name="submit" type="submit" class="mt-3 btn btn-primary">Update</button>
+            <button name="submit" type="submit" class="mt-3 btn btn bg-color-sec text-white">Update</button>
             <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
         </div>
 </form>
