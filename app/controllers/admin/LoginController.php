@@ -33,14 +33,14 @@ class LoginController extends Controller {
                         
                     if(Auth::authenticate(array('role' => 'admin'))) {
                         Session::delete('csrf_token');
-                        redirect('/dashboard');
+                        redirect('/admin/dashboard');
                     } else {
                         Session::set('auth-failed', 'Username or password does not match.');
                         redirect('/login-admin');   
                     }                  
                 } else {
                     $data['errors'] = $validate->login_rules();
-                    return $this->view('admin/login', $data);
+                    return $this->view('/admin/login', $data);
                 }
             } else {
                 Session::set('csrf', 'Cross Site Request Forgery!');
