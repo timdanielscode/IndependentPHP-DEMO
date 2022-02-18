@@ -47,11 +47,14 @@
             </div>
         </div>
         <div class="form-group">
-            <label for="exampleFormControlSelect1">User Role:</label>
-            <select name="role" class="form-control" id="exampleFormControlSelect1">
+            <label for="role">User Role:</label>
+            <select name="role" class="form-control <?php Errors::addValidClass($rules, 'role'); ?>" id="role">
             <option>Normal</option>
             <option>Admin</option>
             </select>
+            <div class="invalid-feedback text-color-thr">
+                <?php echo Errors::get($rules, 'role'); ?>
+            </div>
         </div>
         <div class="form-group">
             <button name="submit" type="submit" class="mt-3 btn bg-color-sec text-white btn-lg">Register</button>

@@ -42,7 +42,7 @@ class UserController extends Controller {
                 $uniqueUsername = DB::try()->select($user->username)->from($user->t)->where($user->username, '=', post('username'))->first();
                 $uniqueEmail = DB::try()->select($user->email)->from($user->t)->where($user->email, '=', post('email'))->fetch();
 
-                if($rules->register_rules($uniqueUsername, $uniqueEmail)->validated()) {
+                if($rules->register_rules_admin($uniqueUsername, $uniqueEmail)->validated()) {
                     
                     DB::try()->insert($user->t, [
 
