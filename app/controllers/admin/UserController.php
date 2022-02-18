@@ -121,7 +121,7 @@ class UserController extends Controller {
                 
                 $rules = new Rules();
                 $user = new User();
-                $user_role = new UserRole();
+                $userRole = new UserRole();
                 $role = new Roles();
 
                 $id = $request["id"];
@@ -133,8 +133,14 @@ class UserController extends Controller {
                     DB::try()->update($user->t)->set([
                         $user->username => $username,
                         $user->email => $email,
-                    ])->where($user->id, '=', $id)->run();
-                    
+                    ])->where($user->id, '=', $id)->run();              
+
+                    if(post('role') == 'Normal') { $roleId = 1;} else {$roleId = 2;}
+
+                    DB::try()->update($userRole->t)->set([
+                        $userRole->role_id => $roleId,
+                    ])->where($userRole->user_id, '=', $id)->run(); 
+
                     Session::set('updated', 'User updated successfully!');
                     redirect("/users");
                     

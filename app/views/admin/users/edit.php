@@ -27,6 +27,16 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="role">User Role:</label>
+            <select name="role" class="form-control <?php Errors::addValidClass($rules, 'role'); ?>" id="role">
+            <option>Normal</option>
+            <option>Admin</option>
+            </select>
+            <div class="invalid-feedback text-color-thr">
+                <?php echo Errors::get($rules, 'role'); ?>
+            </div>
+        </div>
+        <div class="form-group">
             <input type="hidden" name="id" value="<?php echo $user["id"]; ?>"> 
             <button name="submit" type="submit" class="mt-3 btn btn-primary">Update</button>
             <input type="hidden" name="token" value="<?php echo CSRF::token('add');?>" />
