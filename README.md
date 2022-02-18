@@ -1,2 +1,4 @@
-# IndependentPHP-DEMO
-This repository is where you can see how IndependentPHP could be used. 
+![alt text](http://independentphp.com/assets/img/independentphp-logo.png)
+
+Repository to see how you could use IndependentPHP framework.
+
