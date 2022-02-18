@@ -40,12 +40,8 @@ class Router {
     public function handleGetRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
-            foreach($routeKeys as $key) {
-                $this->_collRouteKeys[] = "[" . $key . "]";
-           }
-           $keysColl = implode("|", $this->_collRouteKeys);
-           # if routekeys exists in path
-           if(preg_match("/".$keysColl."/", $path, $match) === 1) { 
+            # if routekeys exists in path
+            if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
                $partsPath = explode("/", $path);
                $partsUri = explode("/", $this->uri());
                
@@ -98,12 +94,8 @@ class Router {
     public function handlePostRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
-            foreach($routeKeys as $key) {
-                $this->_collRouteKeys[] = "[" . $key . "]";
-           }
-           $keysColl = implode("|", $this->_collRouteKeys);
            # if routekeys exists in path
-           if(preg_match("/".$keysColl."/", $path, $match) === 1) { 
+           if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
                $partsPath = explode("/", $path);
                $partsUri = explode("/", $this->uri());
                
@@ -228,6 +220,16 @@ class Router {
         $this->_uri = strtok($this->_uri, '?');
             
         return $this->_uri; 
+    }
+
+
+    public function collectRouteKeys($routeKeys) {
+
+        foreach($routeKeys as $key) {
+            $this->_collRouteKeys[] = "[" . $key . "]";
+       }
+       $keysColl = implode("|", $this->_collRouteKeys);
+       return $keysColl;
     }
     
     /**
