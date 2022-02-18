@@ -16,7 +16,7 @@ class Router {
     private $_uri, $_path, $_error, $_uriRequestVals;
     
     # route key based paths
-    private $_collRouteKeys = [], $_collPostKeys = [], $_pathRouteKeyVals = [], $_uriRouteKeyVals = [], $_pathUriKeyPairedVals = [], $_collPathRouteKeyKeys = [];
+    private $_collRouteKeys = [], $_collPostKeys = [], $_pathRouteKeyVals = [], $_uriRouteKeyVals = [], $_pathUriKeyPairedVals = [], $_collPathRouteKeyKeys = [], $_partsPath;
     public $request, $request_vals;
 
     /**
@@ -42,25 +42,22 @@ class Router {
         if($routeKeys) {
             # if routekeys exists in path
             if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
-               $partsPath = explode("/", $path);
+               $this->_partsPath = explode("/", $path);
                $partsUri = explode("/", $this->uri());
                
-               foreach($this->_collRouteKeys as $routeKey) {
-                   # searches for array keys off path parts on setted routekeys
-                   $pathRouteKeyKeys = array_search($routeKey, $partsPath);
-                   array_push($this->_collPathRouteKeyKeys, $pathRouteKeyKeys);
-               }
+               $this->collectRouteKeyKeys($this->_collRouteKeys);
+
                foreach($this->_collPathRouteKeyKeys as $PahtRouteKeyKey) {
                    
                    if (array_key_exists($PahtRouteKeyKey, $partsUri)) {
                    
                        $this->_uriRouteKeyVals[$PahtRouteKeyKey] = $partsUri[$PahtRouteKeyKey];
-                       $this->_pathRouteKeyVals[$PahtRouteKeyKey] = $partsPath[$PahtRouteKeyKey];
+                       $this->_pathRouteKeyVals[$PahtRouteKeyKey] = $this->_partsPath[$PahtRouteKeyKey];
                        $this->_pathUriKeyPairedVals[$this->_pathRouteKeyVals[$PahtRouteKeyKey]] = $this->_uriRouteKeyVals[$PahtRouteKeyKey];
                    }
                }
    
-               $replace = array_replace($partsPath, $this->_uriRouteKeyVals);
+               $replace = array_replace($this->_partsPath, $this->_uriRouteKeyVals);
                $replaced = implode("/", $replace);
  
                if($replaced == $this->uri()) {                
@@ -96,14 +93,10 @@ class Router {
         if($routeKeys) {
            # if routekeys exists in path
            if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
-               $partsPath = explode("/", $path);
+               $this->_partsPath = explode("/", $path);
                $partsUri = explode("/", $this->uri());
                
-               foreach($this->_collRouteKeys as $routeKey) {
-                   // searches for array keys off path parts on setted routekeys
-                   $pathRouteKeyKeys = array_search($routeKey, $partsPath);
-                   array_push($this->_collPathRouteKeyKeys, $pathRouteKeyKeys);
-               }
+               $this->collectRouteKeyKeys($this->_collRouteKeys);
                 # important so you can update or edit values on a page that is also used in the uri
                 # therefore post keys should be in brackets
                 $postKeys = array_keys($_POST);
@@ -117,7 +110,7 @@ class Router {
                     if (array_key_exists($PahtRouteKeyKey, $partsUri)) {
                         
                         $this->_uriRouteKeyVals[$PahtRouteKeyKey] = $partsUri[$PahtRouteKeyKey];
-                        $this->_pathRouteKeyVals[$PahtRouteKeyKey] = $partsPath[$PahtRouteKeyKey];
+                        $this->_pathRouteKeyVals[$PahtRouteKeyKey] = $this->_partsPath[$PahtRouteKeyKey];
                         $this->_pathUriKeyPairedVals[$this->_pathRouteKeyVals[$PahtRouteKeyKey]] = $this->_uriRouteKeyVals[$PahtRouteKeyKey];
                     }
                 }
@@ -131,7 +124,7 @@ class Router {
                     }
                 }
     
-                $replace = array_replace($partsPath, $this->_uriRouteKeyVals);
+                $replace = array_replace($this->_partsPath, $this->_uriRouteKeyVals);
                 $replaced = implode("/", $replace);
     
                 if($replaced == $this->uri()) {                
@@ -230,6 +223,14 @@ class Router {
        }
        $keysColl = implode("|", $this->_collRouteKeys);
        return $keysColl;
+    }
+
+    public function collectRouteKeyKeys($collRouteKeys) {
+
+        foreach($collRouteKeys as $routeKey) {
+            $pathRouteKeyKeys = array_search($routeKey, $this->_partsPath);
+            array_push($this->_collPathRouteKeyKeys, $pathRouteKeyKeys);
+        }
     }
     
     /**
