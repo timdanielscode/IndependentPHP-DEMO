@@ -283,6 +283,14 @@ class DB {
         return $this;
     }
 
+    public function as($alias) {
+
+        $this->query .= " AS $alias";
+        return $this;
+    }
+
+        
+
     /** 
      * @param string $sql
      * @return object DB

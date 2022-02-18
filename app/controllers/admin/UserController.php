@@ -91,7 +91,7 @@ class UserController extends Controller {
         $user = new User();
         $userRole = new UserRole();
 
-        $current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users as u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $id['id'])->fetch();
+        $current = DB::try()->select('u'.'.*', $role->t.'.'.$role->name)->from('users')->as('u')->join($userRole->t)->on('u'.'.id', '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where('u.id', '=', $id['id'])->fetch();
 
         if(empty($current)) {
             return Response::statusCode(404)->view("/404/404");
