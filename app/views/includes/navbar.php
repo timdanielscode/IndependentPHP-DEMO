@@ -11,6 +11,9 @@
             <li class="nav-item d-inline">
                 <a class="nav-link" href="/register">Register</a>
             </li>
+            <li class="nav-item d-inline">
+                <a class="nav-link" href="/login-admin">Login admin</a>
+            </li>
             </div>
             <?php } ?>
             <?php if(Session::exists('logged_in') && Session::get('user_role') == 'admin') { ?>
