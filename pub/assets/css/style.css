@@ -53,3 +53,12 @@ h2 {
 p {
     font-size: 21px !important;
 }
+
+.navbar-expand-lg .navbar-collapse {
+    display: inline !important;
+    margin-right: 50px;
+}
+
+.navbar-collapse li {
+    float: right;
+}
