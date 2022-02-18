@@ -1,11 +1,22 @@
+<?php use parts\validation\Errors; ?>
+<?php use core\Csrf; ?>
+<?php use parts\Session; ?>
+<?php use parts\Alert; ?>
+
 <?php 
     $this->include('header');
     $this->include('navbar');
 ?>
 <div class="containter">
+
     <?php if(parts\Session::exists("updated")) { ?>
         <div class="my-3"><?php echo parts\Alert::display("success", "updated"); ?></div>
     <?php parts\Session::delete('updated');  } ?>
+
+    <?php if(Session::exists("registered")) { ?>
+        <div class="my-5 w-75 mx-auto"><?php echo Alert::display("warning", "registered"); ?></div>
+    <?php Session::delete('registered'); } ?>
+
     <a href="/users/create">Add user</a>
     <div class="row justify-content-center">
     
