@@ -15,7 +15,7 @@
             <?php } ?>
             <?php if(Session::exists('logged_in') && Session::get('user_role') == 'admin') { ?>
             <li class="nav-item">
-                <a class="nav-link" href="/users">users</a>
+                <a class="nav-link" href="/admin/users">users</a>
             </li>
             <?php } ?>
             <?php if(Session::exists('logged_in')) { ?>

@@ -50,7 +50,7 @@
             <?php } ?>
         </tbody>
     </table>
-    <a class="btn bg-color-sec text-white" href="/users">Back</a>
+    <a class="btn bg-color-sec text-white" href="/admin/users">Back</a>
 </div>
 
 <?php 

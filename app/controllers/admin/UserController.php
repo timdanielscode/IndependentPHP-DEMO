@@ -71,7 +71,7 @@ class UserController extends Controller {
                     ]); 
 
                     Session::set('registered', 'You have been successfully registered!');            
-                    redirect('/users');
+                    redirect('/admin/users');
 
                 } else {
 
@@ -147,7 +147,7 @@ class UserController extends Controller {
                     ])->where($userRole->user_id, '=', $id)->run(); 
 
                     Session::set('updated', 'User updated successfully!');
-                    redirect("/users");
+                    redirect("/admin/users");
                     
                 } else {
                     $data['rules'] = $rules->errors;
@@ -155,7 +155,7 @@ class UserController extends Controller {
 
             } else {
                 Session::set('csrf', 'Cross site request forgery!');
-                redirect("/users/$id");
+                redirect("/admin/users/$id");
             }
         }
         
@@ -172,7 +172,7 @@ class UserController extends Controller {
         $user = new User();
         $user = DB::try()->delete($user->t)->where($user->id, "=", $id)->run();
 
-        redirect("/users");
+        redirect("/admin/users");
     }
 
 
