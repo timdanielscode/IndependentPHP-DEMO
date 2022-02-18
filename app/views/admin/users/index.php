@@ -27,6 +27,7 @@
                     <th scope="col">#</th>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
+                    <th scope="col">Role</th>
                     <th scope="col">Show</th>
                     <th scope="col">Edit</th>
                     <th scope="col">Delete</th>
@@ -43,6 +44,9 @@
                         </th>
                         <th>
                             <?php echo $user['email']; ?>
+                        </th>
+                        <th>
+                            <?php echo $user['name']; ?>
                         </th>
                         <th>
                             <a href="/users/<?php echo $user["id"]; ?>">Read</a>

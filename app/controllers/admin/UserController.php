@@ -17,8 +17,11 @@ class UserController extends Controller {
 
     public function index() {
 
+        $role = new Roles();
         $user = new User();
-        $all = DB::try()->all($user->t)->fetch();
+        $userRole = new UserRole();
+
+        $all = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->fetch();
         $data['all'] = $all;
 
         return $this->view('admin/users/index', $data);
