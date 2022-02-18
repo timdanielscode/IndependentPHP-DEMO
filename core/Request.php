@@ -33,7 +33,9 @@ class Request {
         $data = [];
 
         if($this->getMethod() === 'POST') {
+      
             foreach($_POST as $key => $value) {
+                $value = htmlspecialchars($value);
                 $data[$key] = $value;
                 if($param) {
                     if($key == $param) {
@@ -46,6 +48,7 @@ class Request {
 
         if($this->getMethod() === 'GET') {
             foreach($_GET as $key => $value) {
+                $key = htmlspecialchars($key);
                 $data[$key] = $value;
                 if($param) {
                     if($key == $param) {
