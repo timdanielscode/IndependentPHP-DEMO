@@ -53,9 +53,3 @@ h2 {
 p {
     font-size: 21px !important;
 }
-
-.custom-container {
-    max-width: 88% !important;
-    margin-left: auto;
-    margin-right: auto;
-}
