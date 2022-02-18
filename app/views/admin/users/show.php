@@ -3,11 +3,12 @@
     $this->include('navbar');
 ?>
 
-<div class="row justify-content-center">
-    <table class="table w-75 mt-5">
+<div class="container">
+    <a class="btn bg-color-sec text-white" href="/users">Back</a>
+    <table class="table table-striped mt-3 w-100">
         <thead>
             <tr>
-                <th scope="col">#</th>
+                <th scope="col" class="w-25">#</th>
                 <th scope="col">Details</th>
             </tr>
         </thead>
