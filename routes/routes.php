@@ -10,6 +10,9 @@ Route::get('/')->add('HomeController', 'index');
 
 Route::view('/example-route-view', '/route/route-view');
 
+Route::get('/demo')->add('admin\DemoController', 'index');
+
+
 if(LoginMiddleware::logged_in() === true) {
     Route::get('/profile/[username]')->add('UserController', 'read');
     Route::get('/profile/[username]/edit')->add('UserController', 'edit');
