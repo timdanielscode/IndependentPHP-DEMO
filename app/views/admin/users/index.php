@@ -48,13 +48,13 @@
                             <?php echo $user['name']; ?>
                         </td>
                         <td>
-                            <a class="btn bg-color-sec text-white" href="/admin/users/<?php echo $user["id"]; ?>">Read</a>
+                            <a class="btn bg-color-sec text-white" href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>">Read</a>
                         </td>
                         <td>
-                            <a class="btn bg-color-sec text-white" href="/admin/users/<?php echo $user["id"]; ?>/edit">Edit</a>
+                            <a class="btn bg-color-sec text-white" href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>/edit">Edit</a>
                         </td>   
                         <td>
-                            <a class="btn bg-danger text-white" href="/admin/users/<?php echo $user["id"]; ?>/delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
+                            <a class="btn bg-danger text-white" href="/admin/users/<?php echo $user["id"]; ?>/username/<?php echo $user["username"]; ?>/delete" onclick="return confirm('Are you sure you want to delete this?');">Delete</a>
                         </td>
                     </tr>
                 <?php } ?>
