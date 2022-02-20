@@ -3,21 +3,19 @@
  * Use for handling routes
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 namespace core;
 
-use core\Request;
-use database\DB;
 use app\controllers\http\ResponseController;
 
-class Router {
+use core\RouteBinder;
 
-    private $_uri, $_path, $_error, $_uriRequestVals;
-    
-    # route key based paths
-    private $_collRouteKeys = [], $_collPostKeys = [], $_pathRouteKeyVals = [], $_uriRouteKeyVals = [], $_pathUriKeyPairedVals = [], $_collPathRouteKeyKeys = [], $_partsPath, $_partsUri;
-    public $request, $request_vals;
+class Router extends RouteBinder {
+
+    private $_uri, $_path, $request, $request_vals, $_pathRouteKeyKeys, $_error;
+    private $_partsPath = [];
+    private $_routeBinder;
 
     /**
      * @param object $request Request
@@ -26,7 +24,6 @@ class Router {
     public function __construct($request, $response) {
     
         $this->request = $request;
-        $this->request_vals = $request->get();
         $this->response = $response;
     }
 
@@ -37,26 +34,17 @@ class Router {
      * @param string $path
      * @param array $routeKeys optional
      */
-    public function handleGetRequest($path, $routeKeys = null) {
+    public function getRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
 
-            if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
-               $this->_partsPath = explode("/", $path);
-               $this->_partsUri = explode("/", $this->uri());
-               
-               $this->collectRouteKeyKeys($this->_collRouteKeys);
-               $this->getValsRouteKeyUri($this->_collPathRouteKeyKeys);
+            $checkKeys = implode('|', $routeKeys);
+            if(preg_match("($checkKeys)", $path) === 1) { 
 
-               if($this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals) == $this->uri()) {                
-                   $path = $this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals);
-                  
-                   foreach($this->_pathUriKeyPairedVals as $pathRouteKey => $uriRouteKeyVal) {
-                     
-                       $pathRouteKey = trim($pathRouteKey, "[]");
-                       $this->_uriRequestVals[$pathRouteKey] = $uriRouteKeyVal;
-                   }
-               }
+                $this->setRouteKeyKeys($path, $routeKeys);
+                $this->_routeBinder = new RouteBinder();
+                $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri());
+                $path = $this->_routeBinder->getPath();  
             } 
         }
 
@@ -64,7 +52,6 @@ class Router {
             if($this->request->getMethod() === 'GET') {
                 $this->_path = $path;
             } 
-            
         } 
         return $this;
     }
@@ -76,52 +63,46 @@ class Router {
      * @param string $path
      * @param array $routeKeys optional
      */
-    public function handlePostRequest($path, $routeKeys = null) {
+    public function postRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
 
-           if(preg_match("/".$this->collectRouteKeys($routeKeys)."/", $path, $match) === 1) { 
-               $this->_partsPath = explode("/", $path);
-               $this->_partsUri = explode("/", $this->uri());
-               
-               $this->collectRouteKeyKeys($this->_collRouteKeys);
-               $this->getValsRouteKeyUri($this->_collPathRouteKeyKeys);
+            $checkKeys = implode('|', $routeKeys);
+            if(preg_match("($checkKeys)", $path) === 1) { 
 
-                $postKeys = array_keys($_POST);
-                foreach($postKeys as $postKey) {
-                    $postKey = "[".$postKey."]";
-                    array_push($this->_collPostKeys, $postKey);
-                }
-    
-                $postRouteKeyVals = array_intersect($this->_collPostKeys, $this->_pathRouteKeyVals);
-                $postRouteKeyVals = preg_replace("/[][]/", "", $postRouteKeyVals );
-    
-                foreach($postRouteKeyVals as $postRouteVal) {
-                    if($_POST[$postRouteVal] !== null) {
-                        $this->_pathUriKeyPairedVals["[$postRouteVal]"] = $_POST[$postRouteVal];
-                    }
-                }
-    
-                if($this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals) == $this->uri()) {
-
-                    $path = $this->replacePartsPath($this->_partsPath, $this->_uriRouteKeyVals);
- 
-                    foreach($this->_pathUriKeyPairedVals as $pathRouteKey => $uriRouteKeyVal) {
-                      
-                        $pathRouteKey = trim($pathRouteKey, "[]");
-                        $this->_uriRequestVals[$pathRouteKey] = $uriRouteKeyVal;
-                    }
-                }
+                $this->setRouteKeyKeys($path, $routeKeys);
+                $this->_routeBinder = new RouteBinder();
+                $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri()); 
+                $path = $this->_routeBinder->getPath();      
             } 
         }
-
+        
         if($this->uri() == $path || $this->uri() . "/" == $path) {
 
             if($this->request->getMethod() === 'POST') {
-                $this->_path = $path;
+                if($this->_routeBinder) {
+                    $this->_routeBinder->postRequestVariables();
+                }
+                $this->_path = $path;  
             } 
         } 
         return $this;
+    }
+
+    /**
+     * 
+     * pushes routekey keys of path
+     * 
+     * @param string $path
+     * @param array $routeKeys
+     */
+    public function setRouteKeyKeys($path, $routeKeys) {
+
+        $this->_partsPath = explode("/", $path);
+
+        foreach($routeKeys as $routeKey) {
+            $this->_pathRouteKeyKeys[] = array_search('['.$routeKey.']', $this->_partsPath);
+        }
     }
 
     /**
@@ -141,23 +122,18 @@ class Router {
                 $instance = new $namespaceClass;
                 if($method) {
                     if(method_exists($namespaceClass, $method)) {
-                        
-                        if(!empty($this->_uriRequestVals)) {
-                            $this->request_vals = array_merge($this->request_vals, $this->_uriRequestVals);
+                        $this->request_vals = $this->request->get();
+                       if($this->_routeBinder) {
+                           if($this->_routeBinder->getRequestVariables() !== null) {
+                                $this->request_vals = array_merge($this->request_vals, $this->_routeBinder->getRequestVariables());
+                           }    
                         }
                         return $instance->$method($this->request_vals) . exit();
-                        
-                    } else {
-                        echo $this->error("Method " . $method . " not found!");
-                        exit();
-                    }
+                    } 
                 } else {
                     return $instance . exit(); 
                 }
-            } else {
-                echo $this->error("Class " . $class . " not found!");
-                exit();
-            }
+            } 
         } 
     }
 
@@ -184,82 +160,13 @@ class Router {
      * get uri
      * @return property uri 
      */   
-    private function uri() {
+    public function uri() {
         
         $this->_uri = $this->request->getUri();
         $this->_uri = strtok($this->_uri, '?');
             
         return $this->_uri; 
     }
-
-    /**
-     * 
-     * changes type of routekeys to string and 
-     * adds brackets
-     * 
-     * @param string $array routeKeys
-     * @return string routekey 
-     */  
-    public function collectRouteKeys($routeKeys) {
-
-        foreach($routeKeys as $key) {
-            $this->_collRouteKeys[] = "[" . $key . "]";
-       }
-       $keysColl = implode("|", $this->_collRouteKeys);
-       return $keysColl;
-    }
-    /**
-     * 
-     * collects routekeys keys 
-     * 
-     * @param array $collRouteKeys  
-     */  
-    public function collectRouteKeyKeys($collRouteKeys) {
-
-        foreach($collRouteKeys as $routeKey) {
-            $pathRouteKeyKeys = array_search($routeKey, $this->_partsPath);
-            array_push($this->_collPathRouteKeyKeys, $pathRouteKeyKeys);
-        }
-    }
-
-    /**
-     * 
-     * get values routekey from uri 
-     * replaces these values with path routekeys
-     * where array keys matches 
-     * 
-     * @param string $collPathRouteKeyKeys collection path routekey keys
-     */  
-    public function getValsRouteKeyUri($collPathRouteKeyKeys) {
-
-        foreach($this->_collPathRouteKeyKeys as $PahtRouteKeyKey) {
-                   
-            if (array_key_exists($PahtRouteKeyKey, $this->_partsUri)) {
-
-                $this->_uriRouteKeyVals[$PahtRouteKeyKey] = $this->_partsUri[$PahtRouteKeyKey];
-                $this->_pathRouteKeyVals[$PahtRouteKeyKey] = $this->_partsPath[$PahtRouteKeyKey];
-                $this->_pathUriKeyPairedVals[$this->_pathRouteKeyVals[$PahtRouteKeyKey]] = $this->_uriRouteKeyVals[$PahtRouteKeyKey];
-            }
-        }
-    }
-
-    /**
-     * 
-     * replaces the exploded parts with uri routekey values
-     * 
-     * @param array $partsPath exploded route path
-     * @param array $uriRouteKeyVals uri routekey values
-     * 
-     * @return string $replaced 
-     */  
-        public function replacePartsPath($partsPath, $uriRouteKeyVals)  {
-
-            $replace = array_replace($partsPath, $uriRouteKeyVals);
-            $replaced = implode("/", $replace);
-
-            return $replaced;
-        }
-
     
     /**
      * add namespace to classes

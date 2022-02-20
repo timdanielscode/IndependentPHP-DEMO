@@ -3,9 +3,11 @@
  * Use for setup routes
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 namespace core;
+
+use core\RouteBinder;
 
 class Route extends Router {
 
@@ -14,8 +16,16 @@ class Route extends Router {
     public function __construct(Request $request, Response $response) {
 
         self::$_request = $request;
+        self::$_request->get();
         self::$_response = $response;
     } 
+
+    public static function setRouteKeys($keys = null) {
+        if($keys) {
+            self::$_routeKeys = $keys;
+        }
+    }
+
 
     /**
      * @param string $path
@@ -25,9 +35,12 @@ class Route extends Router {
 
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
-
-           return $route->handleGetRequest($path, self::$_routeKeys);
-        } else {
+            if(self::$_routeKeys !== null) {
+               // $routeb = new RouteBinder($path, self::$_routeKeys);
+            }
+           return $route->getRequest($path, self::$_routeKeys);
+        } 
+        else {
             return $route;
         }
     }
@@ -41,7 +54,7 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'POST') {
 
-           return $route->handlePostRequest($path, self::$_routeKeys);
+           return $route->postRequest($path, self::$_routeKeys);
         } else {
             return $route;
         }
@@ -60,16 +73,6 @@ class Route extends Router {
         } else {
             return $route;
         }
-    }
-
-    /**
-     * @param array $keys
-     * @return property 
-    */
-    public static function setRouteKeys($keys) {
-
-        self::$_routeKeys = $keys;
-        return self::$_routeKeys;
     }
 
     /**
@@ -92,6 +95,4 @@ class Route extends Router {
         $route = new Router(self::$_request, self::$_response);
         return $route; 
     }
-
-
 }

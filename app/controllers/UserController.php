@@ -42,12 +42,15 @@ class UserController extends Controller {
     }
 
     public function update($request) {
-       
+        
         if(submitted('submit')) {
 
             $rules = new Rules();
             $user = new User();
             $username = $request["username"];
+            //print_r($request);
+            
+            //echo $username;
             $email = $request["email"];
             
             if(Csrf::validate(Csrf::token('get'), post('token') ) === true) {

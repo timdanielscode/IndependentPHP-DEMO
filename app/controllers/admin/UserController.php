@@ -123,7 +123,7 @@ class UserController extends Controller {
     public function update($request) {
 
         $id = $request["id"];
-
+        
         if(submitted('submit')) {
 
             if(CSRF::validate(CSRF::token('get'), post('token'))) {
@@ -133,7 +133,6 @@ class UserController extends Controller {
                 $userRole = new UserRole();
                 $role = new Roles();
 
-                $id = $request["id"];
                 $username = $request["username"];
                 $email = $request["email"];
 
@@ -162,8 +161,8 @@ class UserController extends Controller {
                 redirect("/admin/users/$id");
             }
         }
-        
-        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($user_role->t)->on($user->t.'.'.$user->id, '=', $user_role->t.'.'.$user_role->user_id)->join($role->t)->on($user_role->t.'.'.$user_role->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $id)->first();
+
+        $user = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where($user->t.'.'.$user->id, '=', $id)->first();
         $data['user'] = $user;
 
         return $this->view('admin/users/edit', $data);
