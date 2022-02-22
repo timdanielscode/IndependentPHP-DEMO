@@ -3,7 +3,7 @@
  * Use to run application envoirement
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 
 namespace core;
@@ -39,7 +39,7 @@ class App {
 
         $this->middleware->handle();
         require_once '../routes/routes.php';
-        Route::setResponseCode()->code('404');
+        $this->route->uriNotFound(404);
     }
 
 }

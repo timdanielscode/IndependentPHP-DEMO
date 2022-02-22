@@ -3,7 +3,7 @@
  * Handles route binded routes
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 namespace core;
 
@@ -26,15 +26,17 @@ class RouteBinder {
 
         $uri = strtok($uri, '?');
         $this->_partsUri = explode("/", $uri);
-            
-        foreach($routeKeyKeys as $routeKeyKey) {
 
-            $this->_uriRouteKeyValues = $this->_partsUri[$routeKeyKey];
-            $this->_pathRouteKeyValues = $path[$routeKeyKey];
-            $path[$routeKeyKey] = $this->_uriRouteKeyValues;
-            $this->_pathRouteKeyValues = trim($this->_pathRouteKeyValues, "[]");
-            $this->_requestVariables[$this->_pathRouteKeyValues] =  $this->_uriRouteKeyValues;
+        foreach($routeKeyKeys as $routeKeyKey) {
+            if(!empty($this->_partsUri[$routeKeyKey])) {
+                $this->_uriRouteKeyValues = $this->_partsUri[$routeKeyKey];
+                $this->_pathRouteKeyValues = $path[$routeKeyKey];
+                $path[$routeKeyKey] = $this->_uriRouteKeyValues;
+                $this->_pathRouteKeyValues = trim($this->_pathRouteKeyValues, "[]");
+                $this->_requestVariables[$this->_pathRouteKeyValues] =  $this->_uriRouteKeyValues;
+            }
         }
+
         return $this->_path = implode("/", $path);
     }
 

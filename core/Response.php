@@ -3,7 +3,7 @@
  * Use for handling responses
  * 
  * @author Tim Daniëls
- * @version 1.0
+ * @version 1.1
  */
 namespace core;
 
@@ -17,7 +17,7 @@ class Response extends Controller {
      */    
     public function set($code) {
 
-        http_response_code($code);
+        return http_response_code($code);
     }
 
     /** 

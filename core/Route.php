@@ -3,11 +3,12 @@
  * Use for setup routes
  * 
  * @author Tim Daniëls
- * @version 1.1
+ * @version 1.2
  */
 namespace core;
 
 use core\RouteBinder;
+use app\controllers\http\ResponseController;
 
 class Route extends Router {
 
@@ -21,6 +22,7 @@ class Route extends Router {
     } 
 
     public static function setRouteKeys($keys = null) {
+        
         if($keys) {
             self::$_routeKeys = $keys;
         }
@@ -35,9 +37,7 @@ class Route extends Router {
 
         $route = new Router(self::$_request, self::$_response);
         if(self::$_request->getMethod() === 'GET') {
-            if(self::$_routeKeys !== null) {
-               // $routeb = new RouteBinder($path, self::$_routeKeys);
-            }
+
            return $route->getRequest($path, self::$_routeKeys);
         } 
         else {
@@ -79,20 +79,12 @@ class Route extends Router {
      * @param mixed int|string $code
      * @return void
     */
-    public function response($code) {
+    public function uriNotFound($code) {
+
         if(empty($this->_path)) {
-            $this->response->set(404);
+            self::$_response->set(404);
             $controller = new ResponseController();
             $controller->pageNotFound();
         } 
-    }
-    
-    /**
-     * @return object Router
-    */
-    public static function setResponseCode() {
-        
-        $route = new Router(self::$_request, self::$_response);
-        return $route; 
     }
 }

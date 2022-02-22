@@ -3,7 +3,7 @@
  * Use for handling routes
  * 
  * @author Tim Daniëls
- * @version 1.1
+ * @version 1.2
  */
 namespace core;
 
@@ -37,7 +37,7 @@ class Router extends RouteBinder {
     public function getRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
-
+            
             $checkKeys = implode('|', $routeKeys);
             if(preg_match("($checkKeys)", $path) === 1) { 
 
@@ -66,10 +66,10 @@ class Router extends RouteBinder {
     public function postRequest($path, $routeKeys = null) {
 
         if($routeKeys) {
-
+           
             $checkKeys = implode('|', $routeKeys);
             if(preg_match("($checkKeys)", $path) === 1) { 
-
+                
                 $this->setRouteKeyKeys($path, $routeKeys);
                 $this->_routeBinder = new RouteBinder();
                 $this->_routeBinder->setPath($this->_partsPath, $this->_pathRouteKeyKeys, $this->request->getUri()); 
