@@ -177,6 +177,20 @@ class DB {
     }
 
     /** 
+     * @param string $column
+     * @param string $operator
+     * @param string $value
+     * @return object DB
+     */     
+    public function or($column, $operator, $value) {
+
+        $this->data[] = $value;
+        $this->query .= " OR $column $operator ?";
+
+        return $this;
+    }
+
+    /** 
      * @param string $table
      * @param array $data
      * @return object DB
