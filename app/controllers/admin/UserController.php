@@ -26,7 +26,7 @@ class UserController extends Controller {
         if(submitted('search')) {
 
             $search = get('search');
-            $all = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where($user->username, '=', $search)->or($user->email, '=', $search)->fetch();
+            $all = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where($user->username, '=', $search)->or($user->email, '=', $search)->or($role->name, '=', $search)->fetch();
         }
 
         $data['all'] = $all;
