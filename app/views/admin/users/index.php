@@ -2,6 +2,7 @@
 <?php use core\Csrf; ?>
 <?php use parts\Session; ?>
 <?php use parts\Alert; ?>
+<?php use parts\Pagination; ?>
 
 <?php 
     $this->include('header');
@@ -39,7 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                <?php foreach($all as $user) { ?>
+                <?php foreach($allUsers as $user) { ?>
                     <tr>
                         <td>
                             <?php echo $user['id']; ?>
@@ -66,6 +67,15 @@
                 <?php } ?>
             </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <?php 
+                    foreach($numberOfPages as $page) {
+                        echo '<li class="page-item"><a class="page-link" href="/admin/users?page='.$page.'">'.$page.'</a></li>';
+                    }  
+                ?>
+            </ul>
+        </nav>
 </div>
 
 <?php 
