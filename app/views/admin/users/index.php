@@ -69,11 +69,13 @@
         </table>
         <nav aria-label="Page navigation example">
             <ul class="pagination">
+                <li class="page-item"><a class="page-link" href="/admin/users?back=1">Previous</a></li>
                 <?php 
                     foreach($numberOfPages as $page) {
                         echo '<li class="page-item"><a class="page-link" href="/admin/users?page='.$page.'">'.$page.'</a></li>';
                     }  
                 ?>
+                <li class="page-item"><a class="page-link" href="/admin/users?next=1">Next</a></li>
             </ul>
         </nav>
 </div>

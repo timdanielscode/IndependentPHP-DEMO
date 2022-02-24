@@ -2,6 +2,9 @@
 
 namespace parts;
 
+use parts\Session;
+use core\Request;
+
 class Pagination {
 
     private static $_page, $_countPages, $_collPages;
@@ -21,10 +24,11 @@ class Pagination {
                 self::$_page[] = $arr[$i];
             }
         }
-
+        
         if(submitted('page')) {
             for($i = 1; $i <= self::$_countPages; $i++) {
                 if(get('page') == $i) {
+                    Session::set('page', $i);
 
                     $from = $i * $max - $max;
                     $to = $from + $max;
@@ -34,6 +38,40 @@ class Pagination {
                     if($from > $allNum) {
                         $number = $i * $max - $allNum;
                     }
+                } 
+            }
+        }
+ 
+        if(get('back')) {
+
+           if(Session::exists('page')) {
+
+                $req = new Request();
+                $uri = strtok($req->getUri(), '?');
+                $oneBack = Session::get('page') - 1;
+                $back = $uri . "?page=". $oneBack;
+                $first = $uri . "?page=1";
+                
+                if(Session::get('page') !== 1) {
+                    redirect("$back");
+                } else {
+                    redirect("$first");
+                }
+            }
+        } else if(get('next')) {
+            
+            if(Session::exists('page')) {
+               
+                $req = new Request();
+                $uri = strtok($req->getUri(), '?');
+                $oneForward = Session::get('page') + 1;
+                $next = $uri . "?page=". $oneForward;
+                $last = $uri . "?page=" . self::$_countPages;
+                
+                if(Session::get('page') == self::$_countPages) {
+                    redirect("$last");
+                } else {
+                    redirect("$next");
                 }
             }
         }
