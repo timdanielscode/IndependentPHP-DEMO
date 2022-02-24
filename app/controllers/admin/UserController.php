@@ -22,6 +22,13 @@ class UserController extends Controller {
         $userRole = new UserRole();
 
         $all = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->fetch();
+        
+        if(submitted('search')) {
+
+            $search = get('search');
+            $all = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where($user->username, '=', $search)->fetch();
+        }
+
         $data['all'] = $all;
 
         return $this->view('admin/users/index', $data);

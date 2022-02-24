@@ -18,7 +18,13 @@
     <?php Session::delete('registered'); } ?>
 
     <a class="btn bg-color-sec text-white" href="/admin/users/create">Add user</a>
-    
+    <form action="" method="GET">
+        <div class="form-row mt-5">
+            <div class="form-group">
+                <input type="text" name="search" class="form-control" placeholder="Search">
+            </div>
+        </div>
+    </form>
     <table class="table table-striped mt-5">
         
             <thead>
