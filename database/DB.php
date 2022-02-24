@@ -191,6 +191,16 @@ class DB {
     }
 
     /** 
+     * @param string $num
+     * @return object DB
+     */     
+    public function limit($num) {
+
+        $this->query .= " LIMIT $num";
+        return $this;
+    }
+
+    /** 
      * @param string $table
      * @param array $data
      * @return object DB
