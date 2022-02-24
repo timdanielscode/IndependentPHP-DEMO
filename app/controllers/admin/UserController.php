@@ -30,7 +30,7 @@ class UserController extends Controller {
         if(submitted('search')) {
 
             $search = get('search');
-            $allUsers = DB::try()->raw("SELECT users.*,roles.name FROM users INNER JOIN user_role ON users.id = user_role.user_id INNER JOIN roles ON user_role.role_id = roles.id WHERE username = '$search' OR email = '$search'")->fetch();
+            $allUsers = DB::try()->select($user->t.'.*', $role->t.'.'.$role->name)->from($user->t)->join($userRole->t)->on($user->t.'.'.$user->id, '=', $userRole->t.'.'.$userRole->user_id)->join($role->t)->on($userRole->t.'.'.$userRole->role_id, '=', $role->t.'.'.$role->id)->where($user->username, '=', $search)->or($user->email, '=', $search)->or($role->name, '=', $search)->fetch();
         }
 
         $data['allUsers'] = $allUsers;
