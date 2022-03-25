@@ -69,4 +69,12 @@ class Controller {
     public function script($src, $defer = false) {
         echo '<script '.$defer.' src='.'"'.$src.'"'.'></script>';
     }
+
+    /**
+     * @param string $href href of stylesheet
+     * @return void
+     */
+    public function stylesheet($href) {
+        echo '<link rel='.'"'.'stylesheet'.'" '. 'type='.'"'.'text/css'.'" '. 'href='.'"'.$href.'"'.'>';
+    }
 }
